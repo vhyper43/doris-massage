@@ -890,42 +890,35 @@
     <a href="https://wa.me/1424408570?text=Hello%20Doris,%20I%20would%20like%20to%20book%20a%20massage." target="_blank" style="color: inherit; text-decoration: none;">
         +1 (424) 400-8570
     </a>
-</p>
                     <p><i class="fas fa-map-marker-alt"></i> Serving the Greater Area with Mobile Spa Services</p>
                     <p><i class="fas fa-clock"></i> By Appointment Only</p>
                 </div>
             </div>
-            
             <div class="copyright">
                 <p>&copy; 2023 Doris Massage. All rights reserved.</p>
                 <p style="margin-top:5px; font-size:0.8rem;">Website designed for mobile spa home service business</p>
             </div>
         </div>
     </footer>
-
     <script>
         // Mobile Menu Toggle
         const menuToggle = document.getElementById('menuToggle');
         const navLinks = document.getElementById('navLinks');
-        
         if (menuToggle) {
             menuToggle.addEventListener('click', () => {
                 navLinks.classList.toggle('active');
             });
         }
-        
         // Close mobile menu when clicking on a link
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('active');
             });
         });
-        
         // Navigation System
         document.addEventListener('DOMContentLoaded', function() {
             // Get the initial hash from URL or default to 'home'
-            const initialHash = window.location.hash.substring(1) || 'home';
-            
+            const initialHash = window.location.hash.substring(1) || 'home';    
             // Load the appropriate page based on hash
             loadPage(initialHash);
             
@@ -1266,7 +1259,6 @@
                                         <label for="name">Full Name *</label>
                                         <input type="text" id="name" class="form-control" required>
                                     </div>
-                                    
                                     <div class="form-group">
                                         <label for="email">Email Address *</label>
                                         <input type="email" id="email" class="form-control" required>
