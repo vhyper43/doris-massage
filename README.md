@@ -1006,7 +1006,7 @@
                         
                         <div class="service-note">
                             <h3><i class="fas fa-info-circle"></i> Important Note</h3>
-                            <p>All our massage services include a complimentary, soothing conclusion to enhance your relaxation experience. The only exception is the Foot Scrub & Massage, which focuses specifically on foot and lower leg treatment.</p>
+                            <p>All our massage services include a complimentary, soothing conclusion to enhance your relaxation experience with desired naughty happy ending. The only exception is the Foot Scrub & Massage, which focuses specifically on foot and lower leg treatment.</p>
                             <p><strong>We offer outcall service to any location of your choice</strong> - homes, hotels, or offices. Our therapist brings all necessary equipment for a complete spa experience.</p>
                         </div>
                         
