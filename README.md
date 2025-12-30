@@ -1,4 +1,3 @@
-[index.html](https://github.com/user-attachments/files/24375175/index.html)
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -881,8 +880,17 @@
                 
                 <div class="footer-contact">
                     <h4>Contact Info</h4>
-                    <p><i class="fas fa-envelope"></i> dorissandy0@gmail.com</p>
-                    <p><i class="fab fa-whatsapp"></i> +1 (424) 400-8570</p>
+<p>
+    <i class="fas fa-envelope"></i>
+    <a href="mailto:dorissandy0@gmail.com" style="color: inherit; text-decoration: none;">
+        dorissandy0@gmail.com
+    </a>
+</p>
+    <i class="fab fa-whatsapp"></i>
+    <a href="https://wa.me/1424408570?text=Hello%20Doris,%20I%20would%20like%20to%20book%20a%20massage." target="_blank" style="color: inherit; text-decoration: none;">
+        +1 (424) 400-8570
+    </a>
+</p>
                     <p><i class="fas fa-map-marker-alt"></i> Serving the Greater Area with Mobile Spa Services</p>
                     <p><i class="fas fa-clock"></i> By Appointment Only</p>
                 </div>
