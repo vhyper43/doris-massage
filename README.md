@@ -887,7 +887,7 @@
     </a>
 </p>
     <i class="fab fa-whatsapp"></i>
-    <a href="https://wa.me/1424408570?text=Hello%20Doris,%20I%20would%20like%20to%20book%20a%20massage." target="_blank" style="color: inherit; text-decoration: none;">
+    <a href="https://wa.me/message/V456HN5XIXFYA1" target="_blank" style="color: inherit; text-decoration: none;">
         +1 (424) 400-8570
     </a>
                     <p><i class="fas fa-map-marker-alt"></i> Serving the Greater Area with Mobile Spa Services</p>
@@ -1474,8 +1474,11 @@
             initializeBookingPage();
         }
         
-        // Initialize booking page
+        // Initialize booking page with Web3Forms integration
         function initializeBookingPage() {
+            // Web3Forms Configuration - REPLACE WITH YOUR COMPLETE ACCESS KEY
+            const WEB3FORMS_ACCESS_KEY = "fc1e6723-9bb5-44ff-92"; // Replace with complete key from Web3Forms dashboard
+            
             // Services data
             const services = [
                 { id: 1, name: "Reservation Fee", duration: "—", price: 50, desc: "Required to secure your appointment" },
@@ -1611,40 +1614,172 @@
                 });
             }
             
-            // Submit booking
+            // Submit booking to Web3Forms
             const submitBooking = document.getElementById('submitBooking');
             if (submitBooking) {
-                submitBooking.addEventListener('click', function() {
+                submitBooking.addEventListener('click', async function() {
                     const clientName = document.getElementById('clientName').value;
                     const clientEmail = document.getElementById('clientEmail').value;
                     const clientPhone = document.getElementById('clientPhone').value;
                     const clientAddress = document.getElementById('clientAddress').value;
+                    const specialRequests = document.getElementById('specialRequests').value;
+                    const bookingDate = document.getElementById('bookingDate').value;
+                    const bookingTime = document.getElementById('bookingTime').value;
+                    const locationType = document.getElementById('locationType').value;
                     
-                    if (!clientName || !clientEmail || !clientPhone || !clientAddress) {
+                    if (!clientName || !clientEmail || !clientPhone || !clientAddress || !bookingDate || !bookingTime || !locationType) {
                         alert('Please fill in all required fields before submitting.');
                         return;
                     }
                     
-                    // In a real implementation, this data would be sent to a server
-                    // For this demo, we'll simulate a booking submission
+                    if (!window.selectedService) {
+                        alert('Please go back and select a service.');
+                        return;
+                    }
                     
-                    // Update steps
-                    document.getElementById('step3').classList.remove('active');
-                    document.getElementById('step4').classList.add('active');
+                    // Show loading state
+                    const originalText = submitBooking.textContent;
+                    submitBooking.textContent = 'Submitting...';
+                    submitBooking.disabled = true;
                     
-                    // Show confirmation, hide client details
-                    document.getElementById('clientDetails').classList.remove('active');
-                    document.getElementById('confirmation').classList.add('active');
-                    
-                    // Scroll to top of confirmation
-                    document.getElementById('confirmation').scrollIntoView({ behavior: 'smooth' });
-                    
-                    // Simulate sending notification to Doris
-                    console.log('Booking submitted:');
-                    console.log('Service:', window.selectedService);
-                    console.log('Client:', clientName, clientEmail, clientPhone);
-                    console.log('Address:', clientAddress);
-                    console.log('Doris should receive a notification to contact client at:', clientPhone);
+                    try {
+                        // Prepare form data for Web3Forms
+                        const formData = {
+                            access_key: WEB3FORMS_ACCESS_KEY,
+                            subject: `New Booking Request: ${window.selectedService.name}`,
+                            from_name: 'Doris Massage Website',
+                            
+                            // Booking details
+                            service: window.selectedService.name,
+                            price: `$${window.selectedService.price}`,
+                            duration: window.selectedService.duration,
+                            date: bookingDate,
+                            time: bookingTime,
+                            location_type: locationType,
+                            address: clientAddress,
+                            special_requests: specialRequests,
+                            
+                            // Client details
+                            name: clientName,
+                            email: clientEmail,
+                            phone: clientPhone,
+                            
+                            // Metadata
+                            form: 'Doris Massage Booking Form',
+                            submitted_at: new Date().toISOString()
+                        };
+                        
+                        // Send to Web3Forms API
+                        const response = await fetch('https://api.web3forms.com/submit', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify(formData)
+                        });
+                        
+                        const result = await response.json();
+                        
+                        if (response.status === 200 && result.success) {
+                            // Success - show confirmation
+                            document.getElementById('step3').classList.remove('active');
+                            document.getElementById('step4').classList.add('active');
+                            
+                            document.getElementById('clientDetails').classList.remove('active');
+                            document.getElementById('confirmation').classList.add('active');
+                            
+                            // Update confirmation message
+                            const confirmationDiv = document.getElementById('confirmation');
+                            confirmationDiv.innerHTML = `
+                                <div style="text-align:center; padding:40px 20px;">
+                                    <div class="feature-icon" style="font-size:4rem; color:#4CAF50;">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <h3>Booking Request Submitted Successfully!</h3>
+                                    <p>Thank you for your booking request. Your details have been sent to Doris.</p>
+                                    <p><strong>Doris will contact you via text within 1 hour</strong> to confirm your appointment details and arrange payment directly.</p>
+                                    <p>Your appointment is not confirmed until you receive this confirmation text and payment is arranged.</p>
+                                    <div style="background-color:rgba(85, 107, 47, 0.1); padding:20px; border-radius:10px; margin:30px 0; text-align:left;">
+                                        <h4>Booking Summary:</h4>
+                                        <ul style="padding-left:20px; margin-top:10px;">
+                                            <li><strong>Service:</strong> ${window.selectedService.name}</li>
+                                            <li><strong>Date:</strong> ${new Date(bookingDate).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</li>
+                                            <li><strong>Time:</strong> ${bookingTime}</li>
+                                            <li><strong>Location:</strong> ${locationType.charAt(0).toUpperCase() + locationType.slice(1)}</li>
+                                        </ul>
+                                    </div>
+                                    <div style="background-color:#d4edda; color:#155724; padding:15px; border-radius:5px; margin:20px 0; border:1px solid #c3e6cb;">
+                                        <p><i class="fas fa-info-circle"></i> A copy of your booking request has been sent to ${clientEmail}</p>
+                                    </div>
+                                    <a href="#home" class="btn">Return to Homepage</a>
+                                    <p style="margin-top:20px; font-size:0.9rem; color:#666;">Need immediate assistance? <a href="https://wa.me/14244008570" style="color:var(--accent);">WhatsApp Doris</a></p>
+                                </div>
+                            `;
+                            
+                            // Scroll to top of confirmation
+                            document.getElementById('confirmation').scrollIntoView({ behavior: 'smooth' });
+                            
+                            // Reset form for next booking
+                            setTimeout(() => {
+                                document.getElementById('clientName').value = '';
+                                document.getElementById('clientEmail').value = '';
+                                document.getElementById('clientPhone').value = '';
+                                document.getElementById('clientAddress').value = '';
+                                document.getElementById('specialRequests').value = '';
+                                document.querySelectorAll('.service-option').forEach(option => {
+                                    option.classList.remove('selected');
+                                });
+                                window.selectedService = null;
+                            }, 3000);
+                            
+                        } else {
+                            throw new Error(result.message || 'Submission failed');
+                        }
+                        
+                    } catch (error) {
+                        console.error('Booking submission error:', error);
+                        
+                        // Show error message
+                        const confirmationDiv = document.getElementById('confirmation');
+                        confirmationDiv.innerHTML = `
+                            <div style="text-align:center; padding:40px 20px;">
+                                <div class="feature-icon" style="font-size:4rem; color:#dc3545;">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                </div>
+                                <h3>Submission Error</h3>
+                                <p>There was an error submitting your booking request. Please try one of the following:</p>
+                                <div style="background-color:rgba(220, 53, 69, 0.1); padding:20px; border-radius:10px; margin:30px 0; text-align:left;">
+                                    <h4>Alternative Booking Methods:</h4>
+                                    <ol style="padding-left:20px; margin-top:10px;">
+                                        <li><strong>WhatsApp:</strong> <a href="https://wa.me/14244008570" style="color:var(--accent);">+1 (424) 400-8570</a></li>
+                                        <li><strong>Email:</strong> <a href="mailto:dorissandy0@gmail.com" style="color:var(--accent);">dorissandy0@gmail.com</a></li>
+                                        <li><strong>Phone:</strong> +1 (424) 400-8570</li>
+                                    </ol>
+                                </div>
+                                <button class="btn" id="retryBooking" style="margin:10px;">Retry Submission</button>
+                                <a href="#home" class="btn btn-secondary" style="margin:10px;">Return to Homepage</a>
+                            </div>
+                        `;
+                        
+                        document.getElementById('step3').classList.remove('active');
+                        document.getElementById('step4').classList.add('active');
+                        document.getElementById('clientDetails').classList.remove('active');
+                        document.getElementById('confirmation').classList.add('active');
+                        
+                        // Add retry button functionality
+                        document.getElementById('retryBooking').addEventListener('click', function() {
+                            document.getElementById('step4').classList.remove('active');
+                            document.getElementById('step3').classList.add('active');
+                            document.getElementById('confirmation').classList.remove('active');
+                            document.getElementById('clientDetails').classList.add('active');
+                        });
+                        
+                    } finally {
+                        // Restore button state
+                        submitBooking.textContent = originalText;
+                        submitBooking.disabled = false;
+                    }
                 });
             }
         }
